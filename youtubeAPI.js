@@ -33,7 +33,20 @@ function onPlayerStateChange(event) {
         console.log(player.getCurrentTime());
     }
     if(event.data == YT.PlayerState.ENDED){
-        console.log("The video has ended");
+        const p = document.createElement("p");
+        p.innerText = "Video has ended,Type OK TO CONTINUE PLAYING";
+        document.body.appendChild(p);        
+        setTimeout(()=>{
+            while(text !== "OK"){
+                var text = window.prompt("Enter the text: ");
+                if(text === "OK"){
+                setTimeout(()=>{
+                    player.nextVideo();
+                },2000);
+            }
+        }
+        },1000);
     }
 }
+
 
