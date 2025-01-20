@@ -8,6 +8,7 @@ const server = createServer(app);
 const io = new Server(server);
 const PORT = 5000;
 
+
 app.use(express.static(__dirname));
 
 app.get('/',(req,res)=>{
@@ -20,10 +21,25 @@ server.listen(PORT,()=>{
 
 io.on("connection",(socket)=>{
     console.log("A user connected");
+    console.log(Array.from(io.sockets.sockets.keys()))
+    let leaderID = Array.from(io.sockets.sockets.keys())[0]
+    socket.emit('leaderId',  leaderID);
     socket.on('video-data',(data)=>{
         socket.broadcast.emit('video-data',data);
     })
+    socket.on('video-play',(data)=>{
+        socket.broadcast.emit('video-play',data);
+    })
     socket.on('disconnect',()=>{
+        leaderID = null;
         console.log("A user disconnected");
+        if(leaderID === null){
+            const remainingSocket = Array.from(io.sockets.sockets.keys());
+            console.log(Array.from(io.sockets.sockets.keys()));
+            console.log(remainingSocket);
+            leaderID = remainingSocket[0];
+            console.log('leaderId:', leaderID);
+            socket.broadcast.emit('new-leader',leaderID);
+        }
     })
 })
