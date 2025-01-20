@@ -28,10 +28,5 @@ function onPlayerReady(event){
     event.target.playVideo();
 }
 function onPlayerStateChange(event) {
-    if(event.data == YT.PlayerState.PLAYING){
-        console.log(player.getCurrentTime());
-    }
-    if(event.data == YT.PlayerState.ENDED){
-        console.log("The video has ended");
-    }
+
 }
