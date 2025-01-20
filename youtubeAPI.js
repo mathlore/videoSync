@@ -28,5 +28,10 @@ function onPlayerReady(event){
     event.target.playVideo();
 }
 function onPlayerStateChange(event) {
-
+    if(event.data == YT.PlayerState.Playing){
+        socket.emit('video-data',{currentTime: player.getCurrentTime()});
+    }
+    socket.on('video-data',(data)=>{
+        player.getCurrentTime = data.currentTime;
+    })
 }
